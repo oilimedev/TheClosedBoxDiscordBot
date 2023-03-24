@@ -1,6 +1,6 @@
 ROO Reminder Bot Readme
 
-This bot is designed to help remind users to perform certain actions related to berries and flowers in a game. It uses Discord's API to communicate with users and schedule reminders.
+This bot is designed to help remind users to perform certain actions related to Leppa Berries and Gracidea Flowers in PokeMMO. It uses Discord's API to communicate with users and schedule reminders.
 
 Usage
 This bot has the following commands:
