@@ -106,4 +106,4 @@ async def cancel(ctx, member: discord.Member):
         print(f"Error in cancel command: {e}")
 
 # Run the bot
-bot.run("MTA4Nzc3NjgwMTI1MTY3NjE3MA.GSBkvB.jEj0FFW73NpMzfa8gaQOBqYNcS_iGqpUoNoWqY")
+bot.run("")
