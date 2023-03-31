@@ -10,25 +10,19 @@ Reminds the user to harvest their Leppa Berries in 20 hours.
 
 Example usage: !leppa
 
-!gracidea
-Reminds the user to harvest their Gracidea Flowers in 44 hours.
-
-Example usage: !gracidea
-
-!water duration
+!water (hours)
 Reminds the user to water their berries after a specified duration (in hours).
 
 Example usage: !water 6
 
 This will remind the user to water their berries in 6 hours.
 
-!reminders
+!myalerts
 Lists all of the user's active reminders.
 
-Example usage: !reminders
+Example usage: !myalerts
 
-!cancel @user
-Cancels all of the specified user's active reminders.
+!cancelalerts
+Cancels all of the user's active reminders.
 
-Example usage: !cancel @example-user
-
+Example usage: !cancelalerts
