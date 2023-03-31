@@ -26,3 +26,8 @@ Example usage: !myalerts
 Cancels all of the user's active reminders.
 
 Example usage: !cancelalerts
+
+NOTE
+The !leppa command cancels out any outstanding !water reminders.
+This means you should set a !leppa reminder before setting a !water reminder.
+!water reminders can also be set on their own just not before a !leppa reminder.
