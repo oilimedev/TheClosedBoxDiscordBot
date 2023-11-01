@@ -16,7 +16,6 @@ bot = commands.Bot(command_prefix=config.bot_command_prefix, intents=intents)
 if not os.path.exists(config.users_folder_name):
     os.makedirs(config.users_folder_name)
 
-
 @bot.event
 async def on_ready():
     print(f'{bot.user} is ready!')
