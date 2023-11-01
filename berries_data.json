@@ -1,0 +1,7 @@
+{
+    "leppa": {
+        "name": "Leppa",
+        "description": "A hold item that can be used once to restore 10 PP to a move.",
+        "hours": 20
+    }
+}
