@@ -1,5 +1,5 @@
 import discord
-import bot.config as config
+import config as config
 import creds  # File with bot token
 import asyncio
 import datetime
