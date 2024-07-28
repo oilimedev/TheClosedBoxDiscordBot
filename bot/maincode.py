@@ -5,7 +5,7 @@ import asyncio
 import datetime
 import os
 import json
-from discord.ext import commands
+from discord import commands
 from enum import Enum
 
 intents = discord.Intents.all()

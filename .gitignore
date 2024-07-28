@@ -1,4 +1,5 @@
-users/*
-__pycache__/*
+bot/users/*
+bot/__pycache__/*
 keep_alive.py
 creds.py
+bot/node_modules/*
