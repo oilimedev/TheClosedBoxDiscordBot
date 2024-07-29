@@ -1,29 +1,35 @@
-import discord
-import config as config
-import creds  # File with bot token
-import asyncio
-import datetime
 import os
-import json
-from discord import commands
+import discord
+import creds
 from enum import Enum
+import config as config
+import asyncio
+import json
+import datetime
+import data
 
 intents = discord.Intents.all()
-intents.members = True
 
-bot = commands.Bot(command_prefix=config.bot_command_prefix, intents=intents)
+TOKEN = creds.bot_token
+
+client = discord.Client(intents=intents)
 
 if not os.path.exists(config.users_folder_name):
     os.makedirs(config.users_folder_name)
 
-@bot.event
+@client.event
 async def on_ready():
-    print(f'{bot.user} is ready!')
-    bot.loop.create_task(check_alerts())
+    print(f'{client.user} has connected to Discord!')
+    client.loop.create_task(check_alerts())
 
-@bot.event
+@client.event
 async def on_message(message):
-    if message.author == bot.user:
+    for channelId in data.catchingChannelIds:
+        if message.channel.id == channelId:
+            for repostChannelId in data.repostChannelIds:
+                repostChannel = client.get_channel(repostChannelId)
+                await repost_message(message, repostChannel)
+    if message.author == client.user:
         return
 
     user_input = message.content.lower().split(" ")[0]
@@ -47,6 +53,48 @@ async def on_message(message):
 
     if command in BerriesCommandsEnum.__members__:
         await run_berry_command(message)
+
+async def repost_message(message, repostChannel):
+    await repostChannel.send(content=f'{message.author.display_name} ({message.author}) message:')
+    if(message.attachments):
+        attachments_paths = await save_files(message)
+        await delete_message(message)
+        if(message.content):
+            await repostChannel.send(content=f'{message.content}')
+        if attachments_paths:
+            for path in attachments_paths:
+                await repostChannel.send(file=discord.File(path))
+            delete_files(attachments_paths)
+    else:
+        await delete_message(message)
+        await repostChannel.send(content=f'{message.content}')
+
+async def delete_message(message):
+    if not isinstance(message.channel, discord.channel.DMChannel):
+        await message.delete()
+
+async def save_files(message):
+    paths = []
+    author_directory = get_author_directory(message.author)
+    index = 0
+    epoch_time = int(time.time())
+    for attachment in message.attachments:
+        saved_file_path = f'{author_directory}/{index}_{epoch_time}_{attachment.filename}'
+        await attachment.save(saved_file_path)
+        paths.append(saved_file_path)
+        index += 1
+    return paths
+    
+def get_author_directory(author):
+    author_directory = f'./users/{author}'
+    if not os.path.exists(author_directory):
+        os.makedirs(author_directory)
+    return author_directory
+
+def delete_files(paths):
+    for path in paths:
+        os.remove(path)
+
 
 async def run_berry_command(message):
     user_file = await get_user_file_by_author(message.author)
@@ -201,7 +249,7 @@ async def check_alerts():
                     if alert_time <= get_utc_now().timestamp():
                         total_alerts += 1
                         alert_message = beautify_ready_alert_message(alert)
-                        await send_message_to_user(bot.get_user(user_id), alert_message)
+                        await send_message_to_user(client.get_user(user_id), alert_message)
                         user_data["alerts"].remove(alert)
                         await write_json(user_data, user_file)
         print(f"Sent {total_alerts} alerts and checked {total_users} users.")
@@ -277,4 +325,5 @@ help_message = '''\
 `{prefix}help` - Shows this message
 '''.format(prefix = config.bot_command_prefix)
 
-bot.run(creds.bot_token)
+
+client.run(TOKEN)

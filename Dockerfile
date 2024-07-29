@@ -5,4 +5,4 @@ WORKDIR /code
 COPY requirements.txt .
 COPY bot/ .
 RUN pip install --disable-pip-version-check -q -r requirements.txt
-ENTRYPOINT [ "python", "catcherbot.py" ]
+ENTRYPOINT [ "python", "maincode.py" ]
