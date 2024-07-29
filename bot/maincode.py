@@ -31,28 +31,28 @@ async def on_message(message):
                 await repost_message(message, repostChannel)
     if message.author == client.user:
         return
+    if isinstance(message.channel, discord.channel.DMChannel) or message.channel.id in data.botChannelIds:
+        user_input = message.content.lower().split(" ")[0]
+        if not user_input.startswith(config.bot_command_prefix):
+            return
 
-    user_input = message.content.lower().split(" ")[0]
-    if not user_input.startswith(config.bot_command_prefix):
-        return
+        command = user_input.split(config.bot_command_prefix)[1]
+        command_exists = False
+        
+        if command in CommandsEnum.__members__: # Check if command is an existing command
+            command_exists = True
+        
+        if command in BerriesCommandsEnum.__members__: # Check if command is a berry command
+            command_exists = True
 
-    command = user_input.split(config.bot_command_prefix)[1]
-    command_exists = False
-    
-    if command in CommandsEnum.__members__: # Check if command is an existing command
-        command_exists = True
-    
-    if command in BerriesCommandsEnum.__members__: # Check if command is a berry command
-        command_exists = True
+        if not command_exists:
+            return
+        
+        if command in CommandsEnum.__members__:
+            await run_generic_command(message)
 
-    if not command_exists:
-        return
-    
-    if command in CommandsEnum.__members__:
-        await run_generic_command(message)
-
-    if command in BerriesCommandsEnum.__members__:
-        await run_berry_command(message)
+        if command in BerriesCommandsEnum.__members__:
+            await run_berry_command(message)
 
 async def repost_message(message, repostChannel):
     await repostChannel.send(content=f'{message.author.display_name} ({message.author}) message:')
