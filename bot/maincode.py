@@ -5,7 +5,7 @@ from enum import Enum
 import config as config
 import asyncio
 import json
-import datetime
+from datetime import datetime
 import data
 import time  
 
