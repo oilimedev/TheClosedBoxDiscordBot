@@ -238,7 +238,8 @@ async def check_alerts():
     while True:
         total_alerts = 0
         total_users = 0
-        for user_filename in os.listdir(config.users_folder_name):
+        json_files = [entry for entry in os.listdir(config.users_folder_name) if entry.endswith(".json") and os.path.isfile(os.path.join(config.users_folder_name, entry))]
+        for user_filename in json_files:
             total_users += 1
             user_id = int(user_filename.split(".")[0])
             user_file = await get_user_file_by_filename(user_filename)
