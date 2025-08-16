@@ -133,7 +133,7 @@ async def run_generic_command(message):
             alerts = sorted(user_data["alerts"], key=lambda k: k['time'])
             for alert in alerts:
                 alert_time = alert['time']
-                alert_time_datetime = datetime.datetime.fromtimestamp(alert_time)
+                alert_time_datetime = datetime.fromtimestamp(alert_time)
                 remaining_time = alert_time_datetime - get_utc_now()
                 remaining_time_formatting_text = beautify_remaining_time(remaining_time)
                 all_alerts_message += beautify_alert_message(alert['type'], alert['name'], remaining_time_formatting_text)
@@ -268,7 +268,7 @@ def get_timestamp_from_datetime(datetime):
     return datetime.timestamp()
 
 def get_utc_now():
-    return datetime.datetime.now(datetime.UTC)
+    return datetime.now(datetime.UTC)
 
 def beautify_remaining_time(remaining_time):
     remaining_minutes = int(remaining_time.total_seconds() / 60)
