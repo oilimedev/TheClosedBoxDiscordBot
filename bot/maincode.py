@@ -7,6 +7,7 @@ import asyncio
 import json
 import datetime
 import data
+import time  
 
 intents = discord.Intents.all()
 
@@ -86,7 +87,7 @@ async def save_files(message):
     return paths
     
 def get_author_directory(author):
-    author_directory = f'./users/{author}'
+    author_directory = f'./users/{author.id}images'
     if not os.path.exists(author_directory):
         os.makedirs(author_directory)
     return author_directory
@@ -266,7 +267,7 @@ def get_timestamp_from_datetime(datetime):
     return datetime.timestamp()
 
 def get_utc_now():
-    return datetime.datetime.utcnow()
+    return datetime.datetime.now(datetime.UTC)
 
 def beautify_remaining_time(remaining_time):
     remaining_minutes = int(remaining_time.total_seconds() / 60)
